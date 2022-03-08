@@ -123,8 +123,8 @@ class SIRS_Model():
         data = {'p1': p1s, 'scaled_var': scaled_vars, 'error_bars': error_bars}
         pd.DataFrame.from_dict(data).to_csv('scaled_variance.csv', index=False)
 
-        plt.errorbar(p1s, scaled_vars, error_bars, fmt='o', capsize=3)
-        plt.show()
+        # plt.errorbar(p1s, scaled_vars, error_bars, fmt='o', capsize=3)
+        # plt.show()
         
         
 
