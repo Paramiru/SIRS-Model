@@ -24,10 +24,11 @@ def exp4():
     model.get_immune_frac_data()
 
 def exp5():
-    model = SIRS_Model(l=50, seed=69999, p1=0.5, p2=0.5, p3=0.5)
-    model.get_phase_diags()
-    model.get_scaled_var()
-    model = SIRS_Model_Immune(immune_frac=0, l=50, seed=69999, p1=0.5, p2=0.5, p3=0.5)
+    # model = SIRS_Model(l=50, seed=69999, p1=0.5, p2=0.5, p3=0.5)
+    # model.get_phase_diags()
+    # model.get_scaled_var()
+    model = SIRS_Model_Immune(immune_frac=0.0, l=10, seed=42, p1=0.5, p2=0.5, p3=0.5)
+    # model.animate()
     model.get_immune_frac_data()
 
 def exp6():

@@ -65,7 +65,7 @@ class SIRS_Model():
                 infected_cells_meas = []
                 print(f"\np1: {self.p1:1f}, p3: {self.p3:1f}")
                 print(f"State starts with {np.sum(self.state[self.state == 1])} infected\n")
-                for epoch in range(1000):
+                for epoch in range(1100):
                     self.update_cells()
                     # wait for 100 epoch for equilibration time
                     infected_cells = self.get_infected_cells()
@@ -89,12 +89,12 @@ class SIRS_Model():
 
         plt.imshow(mean_contour_plot, extent=[0,1,0,1])
         plt.colorbar()
-        plt.savefig('mean_contour_plot10.png')
+        plt.savefig('mean_contour_plot.png')
         # plt.show()
         plt.clf()
         plt.imshow(var_contour_plot, extent=[0,1,0,1])
         plt.colorbar()
-        plt.savefig('var_contour_plot10.png')
+        plt.savefig('var_contour_plot.png')
         # plt.show()
 
         data = {'scaled_mean': means, 'p1': p1s, 'p3':p3s }
@@ -105,18 +105,23 @@ class SIRS_Model():
 
     def get_scaled_var(self):
         self.p2, self.p3 = 0.5, 0.5
-        p1s = np.arange(0.2, 0.5, step=0.01)
+        p1s = np.arange(0.2, 0.55, step=0.01)
         scaled_vars, error_bars = [], []
+
         for self.p1 in p1s:
             print(f"\nUsing probability p1: {self.p1:.2f}")
             self.state = self.rng.choice(3, size=(self.l, self.l))
             infected_cells = []
-            for epoch in range(int(1e4)):
+
+            for epoch in range(int(1e4)+100):
                 self.update_cells()
+
                 if epoch >= 100:
                     infected_cells.append(self.get_infected_cells())
+
             scaled_vars.append(np.var(infected_cells) / self.l**2)
             print(f"Scaled variance: {scaled_vars[-1]:.2f}")
+
             error_bars.append(get_scaled_var_error(infected_cells, self.l**2))
             print(f"Error bar: {error_bars[-1]:.2f}")
 
@@ -125,8 +130,3 @@ class SIRS_Model():
 
         # plt.errorbar(p1s, scaled_vars, error_bars, fmt='o', capsize=3)
         # plt.show()
-        
-        
-
-
-
