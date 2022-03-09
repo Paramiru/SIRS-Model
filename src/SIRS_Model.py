@@ -90,12 +90,12 @@ class SIRS_Model():
         plt.imshow(mean_contour_plot, extent=[0,1,0,1])
         plt.colorbar()
         plt.savefig('mean_contour_plot10.png')
-        plt.show()
+        # plt.show()
         plt.clf()
         plt.imshow(var_contour_plot, extent=[0,1,0,1])
         plt.colorbar()
         plt.savefig('var_contour_plot10.png')
-        plt.show()
+        # plt.show()
 
         data = {'scaled_mean': means, 'p1': p1s, 'p3':p3s }
         pd.DataFrame.from_dict(data).to_csv('scaled_mean' + '.csv', index=False)
@@ -105,7 +105,7 @@ class SIRS_Model():
 
     def get_scaled_var(self):
         self.p2, self.p3 = 0.5, 0.5
-        p1s = np.arange(0.25, 0.4, step=0.01)
+        p1s = np.arange(0.2, 0.5, step=0.01)
         scaled_vars, error_bars = [], []
         for self.p1 in p1s:
             print(f"\nUsing probability p1: {self.p1:.2f}")
