@@ -105,7 +105,7 @@ class SIRS_Model():
 
     def get_scaled_var(self):
         self.p2, self.p3 = 0.5, 0.5
-        p1s = np.arange(0.2, 0.55, step=0.01)
+        p1s = np.arange(0.2, 0.6, step=0.05)
         scaled_vars, error_bars = [], []
 
         for self.p1 in p1s:
@@ -127,6 +127,3 @@ class SIRS_Model():
 
         data = {'p1': p1s, 'scaled_var': scaled_vars, 'error_bars': error_bars}
         pd.DataFrame.from_dict(data).to_csv('scaled_variance.csv', index=False)
-
-        # plt.errorbar(p1s, scaled_vars, error_bars, fmt='o', capsize=3)
-        # plt.show()

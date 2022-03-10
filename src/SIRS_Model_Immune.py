@@ -1,11 +1,15 @@
+import json
 from collections import defaultdict
+
+import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib.colors import ListedColormap
-import numpy as np
-from SIRS_Model import SIRS_Model
-import pandas as pd
-import json
 from scipy.stats import sem
+
+from SIRS_Model import SIRS_Model
+
+
 class SIRS_Model_Immune(SIRS_Model):
     def __init__(self, immune_frac, nstep=1000, l=0, seed=14122000, p1=0, p2=0, p3=0):
         super().__init__(nstep, l, seed, p1, p2, p3)
@@ -39,24 +43,29 @@ class SIRS_Model_Immune(SIRS_Model):
 
             for self.immune_frac in immune_fracs:
                 print(f"Immune fraction: {self.immune_frac}")
-                infected_cells = []
+                infected_cells_arr = []
                 self.reset_state()
 
                 for epoch in range(int(1e3)+100):
-                    if epoch % 300 == 0:
+                    if epoch % 250 == 0:
                         print(f"Epoch {epoch}")
                         print(f"Infected cells {self.get_infected_cells()}\n")
                     self.update_cells()
                     # 100 epochs for equilibration time
+                    infected_cells = self.get_infected_cells()
                     if epoch > 100:
-                        infected_cells.append(self.get_infected_cells())
+                        infected_cells_arr.append(infected_cells)
+                    else:
+                        if not infected_cells:
+                            infected_cells_arr.append(0)
+                            break
                 # add fraction of infected cells for a given immune_frac
-                results[self.immune_frac].append(np.mean(infected_cells) / self.l**2)
+                results[self.immune_frac].append(np.mean(infected_cells_arr) / self.l**2)
 
         avg_frac = []
         std_error_mean = []
 
-        tf = open("myDictionary.json", "w")
+        tf = open("immunity_data.json", "w")
         json.dump(results,tf)
         tf.close()
 
