@@ -31,7 +31,9 @@ class SIRS_Model():
 
     def update_cells(self):
         for _ in range(self.l**2):
+            # choose a random site in the lattice to update
             pos = self.rng.integers(self.l, size=2)
+            # update randomly chosen site
             self.update_cell(pos[0], pos[1])
 
     def animate(self):
@@ -91,6 +93,7 @@ class SIRS_Model():
         plt.colorbar()
         plt.savefig('mean_contour_plot.png')
         # plt.show()
+        
         plt.clf()
         plt.imshow(var_contour_plot, extent=[0,1,0,1])
         plt.colorbar()
@@ -103,9 +106,9 @@ class SIRS_Model():
         data = {'scaled_var': vars, 'p1': p1s, 'p3':p3s }
         pd.DataFrame.from_dict(data).to_csv('scaled_var' + '.csv', index=False)
 
-    def get_scaled_var(self):
+    def get_scaled_var(self, step=0.05):
         self.p2, self.p3 = 0.5, 0.5
-        p1s = np.arange(0.2, 0.6, step=0.05)
+        p1s = np.arange(0.2, 0.55 + step, step=step)
         scaled_vars, error_bars = [], []
 
         for self.p1 in p1s:
@@ -118,6 +121,8 @@ class SIRS_Model():
 
                 if epoch >= 100:
                     infected_cells.append(self.get_infected_cells())
+                if epoch % 250 == 0:
+                    print(f"Epoch number {epoch}")
 
             scaled_vars.append(np.var(infected_cells) / self.l**2)
             print(f"Scaled variance: {scaled_vars[-1]:.2f}")

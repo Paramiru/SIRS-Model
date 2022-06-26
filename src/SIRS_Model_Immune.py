@@ -33,9 +33,9 @@ class SIRS_Model_Immune(SIRS_Model):
             plt.draw()
             plt.pause(0.001)
 
-    def get_immune_frac_data(self):
+    def get_immune_frac_data(self, step):
         self.p1, self.p2, self.p3 = 0.5, 0.5, 0.5
-        immune_fracs = np.arange(0, 1.05, step=0.05)
+        immune_fracs = np.arange(0, 1. + step, step=step)
         results = defaultdict(list)
         num_simulations = 5
         for simulation in range(num_simulations):
@@ -66,7 +66,7 @@ class SIRS_Model_Immune(SIRS_Model):
         std_error_mean = []
 
         tf = open("immunity_data.json", "w")
-        json.dump(results,tf)
+        json.dump(results, tf)
         tf.close()
 
         for immune_frac in immune_fracs:
